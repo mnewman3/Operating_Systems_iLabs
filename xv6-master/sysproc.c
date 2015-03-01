@@ -102,19 +102,3 @@ sys_halt(void)
     outw(0xB004, 0x2000);
   return 0;
 }
-
-// non-zero argument turns tracing on for process
-// zero argument turns tracing off for process
-// returns how many system calls process has made 
-// since start
-int
-sys_trace(void)
-{
-  int n;
-  
-  if(argint(0, &n) < 0)
-    return -1;
-  proc->tracing = n;
-
-  return proc->scc;
-}
