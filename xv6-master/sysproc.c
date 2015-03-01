@@ -59,7 +59,7 @@ sys_sbrk(void)
 int
 sys_sleep(void)
 {
-  int n;
+   int n;
   uint ticks0;
   
   if(argint(0, &n) < 0)
@@ -90,15 +90,18 @@ sys_uptime(void)
   return xticks;
 }
 
-// Halt (shutdown) the system by sending a special
-// signal to QEMU.
-// Based on: http://pdos.csail.mit.edu/6.828/2012/homework/xv6-syscall.html
-// and: https://github.com/t3rm1n4l/pintos/blob/master/devices/shutdown.c
+// non-zero argument turns tracing on for process
+// zero argument turns tracing off for process
+// returns how many system calls process has made 
+// since start
 int
-sys_halt(void)
+sys_trace(void)
 {
-  char *p = "Shutdown";
-  for( ; *p; p++)
-    outw(0xB004, 0x2000);
-  return 0;
+  int n;
+  
+  if(argint(0, &n) < 0)
+    return -1;
+  proc->tracing = n;
+
+  return proc->scc;
 }
