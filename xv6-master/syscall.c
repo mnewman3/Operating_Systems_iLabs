@@ -99,6 +99,7 @@ extern int sys_unlink(void);
 extern int sys_wait(void);
 extern int sys_write(void);
 extern int sys_uptime(void);
+extern int sys_halt(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -122,6 +123,7 @@ static int (*syscalls[])(void) = {
 [SYS_link]    sys_link,
 [SYS_mkdir]   sys_mkdir,
 [SYS_close]   sys_close,
+[SYS_halt]    sys_halt,
 [SYS_trace]   sys_trace,
 };
 
@@ -147,13 +149,13 @@ static char* syscall_names[] = {
 [SYS_link]    "link",
 [SYS_mkdir]   "mkdir",
 [SYS_close]   "close",
+[SYS_halt]    "halt",
 [SYS_trace]   "trace",
 };
 
 void
 syscall(void)
 {
-  // cprintf("sys call made ... tracing = %d\n", proc->tracing);
   int num;
 
   num = proc->tf->eax;
